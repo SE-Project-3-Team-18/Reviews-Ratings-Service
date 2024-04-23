@@ -1,5 +1,3 @@
-// Below code serves as an example , not for use in the project
-
 const config = require('./config/config')
 const express = require('express')
 require('express-async-errors')
@@ -9,11 +7,12 @@ const mongoose = require('mongoose')
 const CustomLogger = require('./utils/logger')
 const { errorHandler, CustomError } = require('./utils/error')
 const ServiceRegistryClient = require('./utils/serviceRegistry')
+const RatingRoutes = require('./routes/productRatingRoutes')
 
 const mongoUrl = config.MONGODB_URI
 const connection = mongoose.connection
 mongoose.set('strictQuery', false)
-mongoose.connect(mongoUrl, { useNewurlParser: true })
+mongoose.connect(mongoUrl)
   .then(() => {
     console.log('connected to MongoDB')
   })
@@ -55,6 +54,7 @@ app.get('/api', async (req, res, next) => {
   }
 })
 
+app.use('/api', RatingRoutes)
 app.use('/api', errorHandler)
 
 module.exports = app
