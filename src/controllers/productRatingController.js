@@ -28,6 +28,7 @@ async function handleGetProductRating(req, res, next) {
     try {
         const { productId } = req.params;
         const ratingInfo = await productRatingService.getProductRating(productId);
+        console.log("ratingInfo", ratingInfo);
         res.status(200).json(ratingInfo);
     } catch (error) {
         next(error);

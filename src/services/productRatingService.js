@@ -5,11 +5,17 @@ async function rateProduct(userId, productId, rating, review = '') {
     // Check if the user has already rated the product
     const existingRating = await ProductRating.findOne({ userId, productId });
     if (existingRating) {
-        throw new CustomError('You have already rated this product', 400);
+        existingRating.rating = rating;
+        existingRating.review = review;
+        existingRating.createdAt = new Date();
+        return await existingRating.save();
     }
-    // Create a new rating
-    const newRating = new ProductRating({ userId, productId, rating, review });
-    return await newRating.save();
+    else
+    {
+        // Create a new rating
+        const newRating = new ProductRating({ userId, productId, rating, review });
+        return await newRating.save();
+    }
 }
 
 async function updateRating(userId, productId, rating, review = '') {
